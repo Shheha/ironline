@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRONLINE — Personal Strength Coaching</title>
+<meta name="description" content="One-on-one strength coaching. Push, Pull, Legs — five days a week, built around you.">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#0E0E0F;
+    --ink-2:#171717;
+    --bone:#EDEAE2;
+    --bone-dim:#A8A39A;
+    --steel:#3A3A3D;
+    --steel-line: rgba(237,234,226,0.12);
+    --rust:#C8442C;
+    --rust-dim: rgba(200,68,44,0.18);
+    --tan:#D9A85C;
+
+    --display: 'Archivo Expanded', sans-serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  ::selection{ background:var(--rust); color:var(--bone); }
+
+  :focus-visible{
+    outline: 2px solid var(--tan);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(14,14,15,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--steel-line);
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 32px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .logo{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:20px;
+    letter-spacing:0.5px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .logo .dot{ color:var(--rust); }
+  .nav-links{
+    display:flex;
+    gap:36px;
+    font-size:14px;
+    font-weight:500;
+    color:var(--bone-dim);
+  }
+  .nav-links a{ transition:color 0.2s; position:relative; }
+  .nav-links a:hover{ color:var(--bone); }
+  .nav-cta{
+    background:var(--rust);
+    color:var(--bone) !important;
+    padding:10px 22px;
+    border-radius:2px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover{ background:#A8381F; transform:translateY(-1px); }
+  .nav-toggle{ display:none; background:none; border:none; color:var(--bone); font-size:24px; cursor:pointer; }
+
+  @media (max-width: 860px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    padding-top:120px;
+    padding-bottom:80px;
+    background:
+      radial-gradient(ellipse 900px 500px at 80% 10%, rgba(200,68,44,0.10), transparent 60%),
+      linear-gradient(180deg, var(--ink) 0%, #0a0a0b 100%);
+    border-bottom:1px solid var(--steel-line);
+  }
+
+  .hero-grid{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(var(--steel-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--steel-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(180deg, transparent, rgba(0,0,0,0.5) 30%, transparent 80%);
+    opacity:0.5;
+    pointer-events:none;
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--tan);
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    position:relative;
+    z-index:2;
+    opacity:0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay:0.1s;
+  }
+  .eyebrow::before{
+    content:'';
+    width:8px; height:8px;
+    background:var(--rust);
+    border-radius:50%;
+    display:inline-block;
+  }
+
+  .hero h1{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:clamp(48px, 8.5vw, 108px);
+    line-height:0.96;
+    letter-spacing:-1px;
+    text-transform:uppercase;
+    max-width:980px;
+    position:relative;
+    z-index:2;
+    opacity:0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay:0.25s;
+  }
+  .hero h1 .accent{ color:var(--rust); }
+  .hero h1 .outline{
+    -webkit-text-stroke: 2px var(--bone);
+    color:transparent;
+  }
+
+  .hero-sub{
+    margin-top:28px;
+    font-size:19px;
+    color:var(--bone-dim);
+    max-width:540px;
+    line-height:1.6;
+    position:relative;
+    z-index:2;
+    opacity:0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay:0.4s;
+  }
+
+  .hero-actions{
+    margin-top:40px;
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:2;
+    opacity:0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay:0.55s;
+  }
+
+  .btn-primary{
+    background:var(--rust);
+    color:var(--bone);
+    padding:16px 32px;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    border-radius:2px;
+    transition: background 0.2s, transform 0.15s;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .btn-primary:hover{ background:#A8381F; transform:translateY(-2px); }
+
+  .btn-ghost{
+    border:1px solid var(--steel-line);
+    color:var(--bone);
+    padding:16px 32px;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    border-radius:2px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover{ border-color:var(--bone-dim); background:rgba(255,255,255,0.03); }
+
+  .hero-stats{
+    margin-top:72px;
+    display:flex;
+    gap:56px;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:2;
+    opacity:0;
+    animation: fadeUp 0.8s ease forwards;
+    animation-delay:0.7s;
+  }
+  .stat-num{
+    font-family:var(--mono);
+    font-size:34px;
+    font-weight:600;
+    color:var(--bone);
+  }
+  .stat-label{
+    font-size:13px;
+    color:var(--bone-dim);
+    margin-top:4px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{ padding:120px 0; border-bottom:1px solid var(--steel-line); }
+  .section-tag{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--rust);
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .section-title{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:clamp(32px, 4.5vw, 52px);
+    text-transform:uppercase;
+    letter-spacing:-0.5px;
+    line-height:1.05;
+    max-width:700px;
+  }
+  .section-desc{
+    margin-top:18px;
+    color:var(--bone-dim);
+    font-size:17px;
+    max-width:560px;
+    line-height:1.7;
+  }
+
+  /* ---------- METHOD / APPROACH ---------- */
+  .method-grid{
+    margin-top:64px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--steel-line);
+    border:1px solid var(--steel-line);
+  }
+  .method-card{
+    background:var(--ink);
+    padding:40px 32px;
+    transition: background 0.25s;
+  }
+  .method-card:hover{ background:var(--ink-2); }
+  .method-num{
+    font-family:var(--mono);
+    color:var(--bone-dim);
+    font-size:13px;
+    letter-spacing:1px;
+  }
+  .method-card h3{
+    font-family:var(--display);
+    font-size:22px;
+    font-weight:800;
+    text-transform:uppercase;
+    margin:18px 0 12px;
+    letter-spacing:0.3px;
+  }
+  .method-card p{
+    color:var(--bone-dim);
+    font-size:15px;
+    line-height:1.65;
+  }
+
+  @media (max-width: 860px){
+    .method-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- PROGRAM / PPL LOGBOOK ---------- */
+  .program{ background:#0a0a0b; }
+
+  .day-tabs{
+    display:flex;
+    gap:0;
+    margin-top:56px;
+    border:1px solid var(--steel-line);
+    border-radius:2px;
+    overflow-x:auto;
+  }
+  .day-tab{
+    flex:1;
+    min-width:120px;
+    background:transparent;
+    border:none;
+    border-right:1px solid var(--steel-line);
+    color:var(--bone-dim);
+    font-family:var(--mono);
+    font-size:13px;
+    padding:18px 12px;
+    cursor:pointer;
+    transition: background 0.2s, color 0.2s;
+    text-align:center;
+  }
+  .day-tab:last-child{ border-right:none; }
+  .day-tab .d-num{ display:block; font-size:11px; letter-spacing:1px; opacity:0.7; margin-bottom:4px; }
+  .day-tab .d-name{ display:block; font-family:var(--display); font-size:15px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--bone); }
+  .day-tab.active{ background:var(--rust-dim); color:var(--tan); }
+  .day-tab.active .d-name{ color:var(--bone); }
+  .day-tab:hover:not(.active){ background:rgba(255,255,255,0.04); }
+
+  .log-card{
+    margin-top:0;
+    border:1px solid var(--steel-line);
+    border-top:none;
+    background:var(--ink-2);
+    padding:48px;
+  }
+  .log-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:16px;
+    padding-bottom:28px;
+    border-bottom:1px dashed var(--steel-line);
+    margin-bottom:8px;
+  }
+  .log-head h3{
+    font-family:var(--display);
+    font-size:32px;
+    font-weight:900;
+    text-transform:uppercase;
+  }
+  .log-head .focus-tag{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--bone-dim);
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--steel-line);
+    padding:6px 14px;
+    border-radius:20px;
+    text-transform:uppercase;
+  }
+
+  table.exercise-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:16px;
+  }
+  .exercise-table thead th{
+    text-align:left;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--bone-dim);
+    padding:14px 8px;
+    border-bottom:1px solid var(--steel-line);
+  }
+  .exercise-table thead th:first-child{ padding-left:0; }
+  .exercise-table tbody td{
+    padding:18px 8px;
+    border-bottom:1px solid var(--steel-line);
+    font-size:15px;
+    vertical-align:top;
+  }
+  .exercise-table tbody td:first-child{ padding-left:0; }
+  .exercise-table tbody tr:last-child td{ border-bottom:none; }
+  .ex-name{ font-weight:600; color:var(--bone); }
+  .ex-sub{ display:block; font-size:13px; color:var(--bone-dim); margin-top:3px; }
+  .ex-sets, .ex-reps{ font-family:var(--mono); color:var(--tan); font-size:14px; white-space:nowrap; }
+  .ex-rest{ font-family:var(--mono); color:var(--bone-dim); font-size:13px; white-space:nowrap; }
+
+  .log-note{
+    margin-top:28px;
+    padding-top:24px;
+    border-top:1px dashed var(--steel-line);
+    font-size:14px;
+    color:var(--bone-dim);
+    line-height:1.7;
+  }
+  .log-note strong{ color:var(--tan); font-weight:600; }
+
+  @media (max-width: 700px){
+    .log-card{ padding:28px 20px; }
+    .exercise-table thead{ display:none; }
+    .exercise-table tbody tr{
+      display:block;
+      border-bottom:1px solid var(--steel-line);
+      padding:16px 0;
+    }
+    .exercise-table tbody td{ display:block; border-bottom:none; padding:4px 0; }
+    .exercise-table tbody tr:last-child{ border-bottom:none; }
+    .ex-sets::before{ content:'Sets '; color:var(--bone-dim); }
+    .ex-reps::before{ content:'Reps '; color:var(--bone-dim); }
+    .ex-rest::before{ content:'Rest '; color:var(--bone-dim); }
+  }
+
+  .program-footnote{
+    margin-top:32px;
+    font-size:14px;
+    color:var(--bone-dim);
+    max-width:780px;
+    line-height:1.7;
+  }
+
+  /* ---------- COACH ---------- */
+  .coach-section{
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:64px;
+    align-items:start;
+  }
+  .coach-card{
+    border:1px solid var(--steel-line);
+    background:var(--ink-2);
+    padding:32px;
+  }
+  .coach-photo{
+    width:100%;
+    aspect-ratio:1;
+    background: linear-gradient(135deg, var(--steel) 0%, var(--ink) 100%);
+    border-radius:2px;
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--display);
+    font-size:64px;
+    font-weight:900;
+    color:var(--rust);
+    border:1px solid var(--steel-line);
+  }
+  .coach-card h4{
+    font-family:var(--display);
+    font-size:22px;
+    font-weight:800;
+    text-transform:uppercase;
+  }
+  .coach-card .role{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--tan);
+    margin-top:6px;
+    display:block;
+  }
+  .coach-creds{
+    margin-top:20px;
+    padding-top:20px;
+    border-top:1px dashed var(--steel-line);
+    list-style:none;
+    font-size:14px;
+    color:var(--bone-dim);
+  }
+  .coach-creds li{ padding:6px 0; display:flex; gap:10px; }
+  .coach-creds li::before{ content:'—'; color:var(--rust); }
+
+  .coach-bio p{
+    font-size:17px;
+    line-height:1.8;
+    color:var(--bone-dim);
+    margin-bottom:20px;
+  }
+  .coach-bio p:first-child{
+    font-size:21px;
+    color:var(--bone);
+    font-weight:500;
+    line-height:1.6;
+  }
+
+  @media (max-width: 860px){
+    .coach-section{ grid-template-columns:1fr; }
+    .coach-card{ max-width:340px; }
+  }
+
+  /* ---------- PRICING ---------- */
+  .pricing-grid{
+    margin-top:64px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .price-card{
+    border:1px solid var(--steel-line);
+    padding:40px 32px;
+    transition: border-color 0.25s, transform 0.25s;
+    position:relative;
+  }
+  .price-card:hover{ border-color:var(--bone-dim); transform:translateY(-4px); }
+  .price-card.featured{
+    border-color:var(--rust);
+    background: linear-gradient(180deg, rgba(200,68,44,0.06), transparent 40%);
+  }
+  .price-card.featured::before{
+    content:'MOST BOOKED';
+    position:absolute;
+    top:-1px; right:-1px;
+    background:var(--rust);
+    color:var(--bone);
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:1px;
+    padding:6px 12px;
+  }
+  .price-name{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--bone-dim);
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  .price-amt{
+    font-family:var(--display);
+    font-size:48px;
+    font-weight:900;
+    margin:14px 0 4px;
+  }
+  .price-amt span{ font-size:16px; color:var(--bone-dim); font-family:var(--body); font-weight:500; }
+  .price-card ul{
+    list-style:none;
+    margin:28px 0 32px;
+  }
+  .price-card li{
+    padding:10px 0;
+    border-top:1px solid var(--steel-line);
+    font-size:14px;
+    color:var(--bone-dim);
+    display:flex;
+    gap:10px;
+  }
+  .price-card li::before{ content:'✓'; color:var(--tan); font-weight:700; }
+  .price-card .btn-ghost, .price-card .btn-primary{ width:100%; text-align:center; justify-content:center; }
+
+  @media (max-width: 860px){
+    .pricing-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- CTA / CONTACT ---------- */
+  .cta-section{
+    text-align:center;
+    background:
+      radial-gradient(ellipse 700px 400px at 50% 0%, rgba(200,68,44,0.12), transparent 60%),
+      var(--ink);
+    border-bottom:none;
+  }
+  .cta-section .section-title{ margin:0 auto; }
+  .cta-section .section-desc{ margin:18px auto 0; }
+  .cta-section .hero-actions{ justify-content:center; opacity:1; animation:none; margin-top:36px; }
+
+  footer{
+    padding:48px 0 32px;
+    text-align:center;
+  }
+  footer .logo{ justify-content:center; margin-bottom:16px; }
+  footer p{ color:var(--bone-dim); font-size:13px; }
+
+  /* ---------- MOBILE NAV DRAWER ---------- */
+  .mobile-drawer{
+    position:fixed;
+    inset:0;
+    background:var(--ink);
+    z-index:200;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:32px;
+  }
+  .mobile-drawer.open{ display:flex; }
+  .mobile-drawer a{
+    font-family:var(--display);
+    font-size:28px;
+    font-weight:800;
+    text-transform:uppercase;
+  }
+  .mobile-close{
+    position:absolute;
+    top:24px; right:32px;
+    background:none; border:none; color:var(--bone); font-size:28px; cursor:pointer;
+  }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot">/</span>IRONLINE</div>
+    <div class="nav-links">
+      <a href="#method">Method</a>
+      <a href="#program">Program</a>
+      <a href="#coach">Coach</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <a href="#contact" class="nav-cta">Start Coaching</a>
+    <button class="nav-toggle" aria-label="Open menu" onclick="document.getElementById('drawer').classList.add('open')">☰</button>
+  </nav>
+</header>
+
+<div class="mobile-drawer" id="drawer">
+  <button class="mobile-close" aria-label="Close menu" onclick="document.getElementById('drawer').classList.remove('open')">✕</button>
+  <a href="#method" onclick="document.getElementById('drawer').classList.remove('open')">Method</a>
+  <a href="#program" onclick="document.getElementById('drawer').classList.remove('open')">Program</a>
+  <a href="#coach" onclick="document.getElementById('drawer').classList.remove('open')">Coach</a>
+  <a href="#pricing" onclick="document.getElementById('drawer').classList.remove('open')">Pricing</a>
+  <a href="#contact" onclick="document.getElementById('drawer').classList.remove('open')">Start Coaching</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="wrap">
+    <p class="eyebrow">One-on-one strength coaching</p>
+    <h1>Train with<br><span class="accent">intent.</span><br><span class="outline">not noise.</span></h1>
+    <p class="hero-sub">Personal coaching built on a five-day Push / Pull / Legs split — programmed for you, tracked every session, adjusted every week. No guesswork, no generic plans.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a free assessment →</a>
+      <a href="#program" class="btn-ghost">See the program</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">5<span style="color:var(--bone-dim); font-size:18px;">/wk</span></div>
+        <div class="stat-label">Training days</div>
+      </div>
+      <div>
+        <div class="stat-num">1:1</div>
+        <div class="stat-label">Coaching ratio</div>
+      </div>
+      <div>
+        <div class="stat-num">8<span style="color:var(--bone-dim); font-size:18px;">wk</span></div>
+        <div class="stat-label">Cycle length</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="section" id="method">
+  <div class="wrap">
+    <p class="section-tag">// The Method</p>
+    <h2 class="section-title">Three things every cycle is built on</h2>
+    <p class="section-desc">No fad splits, no plan-of-the-month. Every client runs the same underlying framework — what changes is the load, the exercises, and the pace, based on what your body tells us each week.</p>
+
+    <div class="method-grid">
+      <div class="method-card reveal">
+        <span class="method-num">PRINCIPLE</span>
+        <h3>Push / Pull / Legs</h3>
+        <p>Each muscle group gets trained twice a week with enough recovery between sessions to grow, not just get sore. It's the most field-tested split in strength training because it respects how the body actually recovers.</p>
+      </div>
+      <div class="method-card reveal">
+        <span class="method-num">PRINCIPLE</span>
+        <h3>Progressive overload</h3>
+        <p>Every session is logged. When you hit your reps cleanly two sessions running, the weight moves up. Growth comes from a paper trail of small wins, not from chasing a pump.</p>
+      </div>
+      <div class="method-card reveal">
+        <span class="method-num">PRINCIPLE</span>
+        <h3>Coached, not just programmed</h3>
+        <p>You get a real check-in every week — form review, load adjustments, and a plan for what changes next. The program reacts to you, not the other way around.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM -->
+<section class="section program" id="program">
+  <div class="wrap">
+    <p class="section-tag">// The Program</p>
+    <h2 class="section-title">Your 5-day Push, Pull, Legs split</h2>
+    <p class="section-desc">This is the actual structure every new client starts from in week one. Tap a day to see the full session — exercises, sets, reps, and rest. Loads shown are starting points; your coach sets your real numbers after the first assessment.</p>
+
+    <div class="day-tabs" id="dayTabs"></div>
+    <div class="log-card" id="logCard"></div>
+
+    <p class="program-footnote">Day 6 is optional conditioning or a weak-point accessory session (your call). Day 7 is full rest. Most clients repeat this 5-day week for a 4-week block before we re-test and adjust loads.</p>
+  </div>
+</section>
+
+<!-- COACH -->
+<section class="section" id="coach">
+  <div class="wrap">
+    <p class="section-tag">// Your Coach</p>
+    <h2 class="section-title" style="margin-bottom:56px;">Who's programming your training</h2>
+
+    <div class="coach-section">
+      <div class="coach-card">
+        <div class="coach-photo">DM</div>
+        <h4>Daniel Marsh</h4>
+        <span class="role">Head Coach, Strength &amp; Conditioning</span>
+        <ul class="coach-creds">
+          <li>11 years coaching experience</li>
+          <li>CSCS certified</li>
+          <li>240+ clients programmed</li>
+          <li>Competitive powerlifting background</li>
+        </ul>
+      </div>
+      <div class="coach-bio">
+        <p>I don't believe in handing someone a PDF and calling it coaching.</p>
+        <p>Every client who walks in gets assessed first — mobility, current strength, old injuries, schedule. The Push/Pull/Legs split you see in the program section is the starting frame, but your sets, reps, and exercise choices come out of that assessment, not a template.</p>
+        <p>What stays consistent is the check-in. Every week, we look at what moved and what stalled, and the plan adjusts. That's the actual job — not writing a program once, but coaching the person running it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <p class="section-tag">// Coaching Plans</p>
+    <h2 class="section-title">Pick how much support you want</h2>
+    <p class="section-desc">Every plan runs on the same five-day split. The difference is how closely we work together week to week.</p>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">Self-Guided</div>
+        <div class="price-amt">$49<span>/mo</span></div>
+        <ul>
+          <li>Full 5-day PPL program</li>
+          <li>Progress tracking sheet</li>
+          <li>Exercise demo library</li>
+          <li>Monthly check-in (async)</li>
+        </ul>
+        <a href="#contact" class="btn-ghost">Choose plan</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-name">Coached</div>
+        <div class="price-amt">$149<span>/mo</span></div>
+        <ul>
+          <li>Everything in Self-Guided</li>
+          <li>Weekly 1:1 check-in call</li>
+          <li>Load &amp; exercise adjustments</li>
+          <li>Form review via video</li>
+          <li>Direct messaging access</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Choose plan</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">In-Person</div>
+        <div class="price-amt">$320<span>/mo</span></div>
+        <ul>
+          <li>Everything in Coached</li>
+          <li>2x in-person sessions/week</li>
+          <li>Live form correction</li>
+          <li>Priority scheduling</li>
+        </ul>
+        <a href="#contact" class="btn-ghost">Choose plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section" id="contact">
+  <div class="wrap">
+    <p class="section-tag" style="margin:0 auto 16px; width:fit-content;">// Get Started</p>
+    <h2 class="section-title">Your first session<br>is on us.</h2>
+    <p class="section-desc">Book a free 20-minute assessment. We'll look at your current training, your goals, and whether the 5-day split fits your schedule — no pressure, no contract.</p>
+    <div class="hero-actions">
+      <a href="mailto:coach@ironline.example" class="btn-primary">Book your free assessment →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo"><span class="dot">/</span>IRONLINE</div>
+  <p>© 2026 Ironline Coaching. Train with intent.</p>
+</footer>
+
+<script>
+  // ---- PPL Program Data ----
+  const program = [
+    {
+      day: "Day 1", name: "Push", focus: "Chest · Shoulders · Triceps",
+      exercises: [
+        { name: "Barbell Bench Press", sub: "Flat barbell, controlled tempo", sets: "4", reps: "6–8", rest: "2–3 min" },
+        { name: "Overhead Press", sub: "Standing, strict barbell or dumbbell", sets: "3", reps: "6–8", rest: "2 min" },
+        { name: "Incline Dumbbell Press", sub: "30° bench", sets: "3", reps: "8–10", rest: "90 sec" },
+        { name: "Lateral Raise", sub: "Dumbbell or cable", sets: "3", reps: "12–15", rest: "60 sec" },
+        { name: "Triceps Rope Pushdown", sub: "Cable, full lockout", sets: "3", reps: "10–12", rest: "60 sec" },
+        { name: "Overhead Triceps Extension", sub: "Dumbbell or cable, single or double arm", sets: "2", reps: "12–15", rest: "60 sec" },
+      ],
+      note: "<strong>Coach note:</strong> Bench and OHP are your top-set movements — prioritize bar speed and form before adding weight. Everything after is volume work; chase the burn, not the load."
+    },
+    {
+      day: "Day 2", name: "Pull", focus: "Back · Lats · Biceps",
+      exercises: [
+        { name: "Deadlift", sub: "Conventional or trap bar", sets: "4", reps: "5–6", rest: "3 min" },
+        { name: "Pull-Up", sub: "Bodyweight or assisted", sets: "3", reps: "6–10", rest: "2 min" },
+        { name: "Barbell Row", sub: "Pendlay or bent-over", sets: "3", reps: "8–10", rest: "90 sec" },
+        { name: "Lat Pulldown", sub: "Wide grip, cable", sets: "3", reps: "10–12", rest: "90 sec" },
+        { name: "Face Pull", sub: "Cable, rope attachment", sets: "3", reps: "15", rest: "60 sec" },
+        { name: "Barbell or Dumbbell Curl", sub: "Standing, strict", sets: "3", reps: "10–12", rest: "60 sec" },
+      ],
+      note: "<strong>Coach note:</strong> Deadlift is the priority — reset your position every rep, no grinding past failure on this one. Face pulls aren't optional; they keep your shoulders healthy long-term."
+    },
+    {
+      day: "Day 3", name: "Legs", focus: "Quads · Hamstrings · Glutes · Calves",
+      exercises: [
+        { name: "Back Squat", sub: "High-bar or low-bar", sets: "4", reps: "6–8", rest: "3 min" },
+        { name: "Romanian Deadlift", sub: "Barbell or dumbbell", sets: "3", reps: "8–10", rest: "2 min" },
+        { name: "Leg Press", sub: "Controlled, full range", sets: "3", reps: "10–12", rest: "90 sec" },
+        { name: "Walking Lunge", sub: "Dumbbell, bodyweight load", sets: "3", reps: "12/leg", rest: "90 sec" },
+        { name: "Leg Curl", sub: "Seated or lying machine", sets: "3", reps: "12–15", rest: "60 sec" },
+        { name: "Standing Calf Raise", sub: "Machine or barbell", sets: "4", reps: "15–20", rest: "45 sec" },
+      ],
+      note: "<strong>Coach note:</strong> Squat depth before squat weight — every rep to at least parallel. RDLs train the hinge pattern deadlifts don't fully cover, so don't skip them."
+    },
+    {
+      day: "Day 4", name: "Push", focus: "Chest · Shoulders · Triceps (volume)",
+      exercises: [
+        { name: "Dumbbell Bench Press", sub: "Flat, full stretch at bottom", sets: "4", reps: "8–10", rest: "2 min" },
+        { name: "Seated Dumbbell Shoulder Press", sub: "Neutral or pronated grip", sets: "3", reps: "8–10", rest: "2 min" },
+        { name: "Cable Chest Fly", sub: "Mid-chest height", sets: "3", reps: "12–15", rest: "60 sec" },
+        { name: "Cable Lateral Raise", sub: "Single arm", sets: "3", reps: "12–15", rest: "60 sec" },
+        { name: "Dip", sub: "Bodyweight or weighted", sets: "3", reps: "8–12", rest: "90 sec" },
+        { name: "Close-Grip Bench Press", sub: "Barbell, elbows tucked", sets: "2", reps: "10–12", rest: "90 sec" },
+      ],
+      note: "<strong>Coach note:</strong> Same muscles as Day 1, different angle — dumbbells let your shoulders move more naturally after Monday's heavy bar work. Keep this session a notch lighter in intensity."
+    },
+    {
+      day: "Day 5", name: "Pull", focus: "Back · Lats · Biceps (volume)",
+      exercises: [
+        { name: "T-Bar Row", sub: "Chest-supported if available", sets: "4", reps: "8–10", rest: "2 min" },
+        { name: "Single-Arm Dumbbell Row", sub: "Bench-supported", sets: "3", reps: "10/side", rest: "90 sec" },
+        { name: "Chest-Supported Row Machine", sub: "Or seated cable row", sets: "3", reps: "10–12", rest: "90 sec" },
+        { name: "Straight-Arm Pulldown", sub: "Cable, lat isolation", sets: "3", reps: "12–15", rest: "60 sec" },
+        { name: "Hammer Curl", sub: "Dumbbell, neutral grip", sets: "3", reps: "10–12", rest: "60 sec" },
+        { name: "Rear Delt Fly", sub: "Dumbbell or machine", sets: "2", reps: "15", rest: "45 sec" },
+      ],
+      note: "<strong>Coach note:</strong> This session leans on machines and dumbbells on purpose — your lower back gets a break from Tuesday's deadlift while your lats still get hit hard."
+    },
+  ];
+
+  const tabsEl = document.getElementById('dayTabs');
+  const cardEl = document.getElementById('logCard');
+
+  function renderDay(idx){
+    const d = program[idx];
+    document.querySelectorAll('.day-tab').forEach((el, i) => el.classList.toggle('active', i === idx));
+
+    const rows = d.exercises.map(ex => `
+      <tr>
+        <td><span class="ex-name">${ex.name}</span><span class="ex-sub">${ex.sub}</span></td>
+        <td class="ex-sets">${ex.sets}</td>
+        <td class="ex-reps">${ex.reps}</td>
+        <td class="ex-rest">${ex.rest}</td>
+      </tr>
+    `).join('');
+
+    cardEl.innerHTML = `
+      <div class="log-head">
+        <h3>${d.day} — ${d.name}</h3>
+        <span class="focus-tag">${d.focus}</span>
+      </div>
+      <table class="exercise-table">
+        <thead>
+          <tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Rest</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="log-note">${d.note}</div>
+    `;
+  }
+
+  tabsEl.innerHTML = program.map((d, i) => `
+    <button class="day-tab ${i === 0 ? 'active' : ''}" data-idx="${i}">
+      <span class="d-num">${d.day}</span>
+      <span class="d-name">${d.name}</span>
+    </button>
+  `).join('');
+
+  tabsEl.querySelectorAll('.day-tab').forEach(btn => {
+    btn.addEventListener('click', () => renderDay(parseInt(btn.dataset.idx)));
+  });
+
+  renderDay(0);
+
+  // ---- Scroll reveal ----
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
